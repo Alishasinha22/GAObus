@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GAObus - Frontend Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>GAObus</h1>
+    <p class="tag">Commuters • Conductors • Municipal</p>
+  </header>
+
+  <main class="container">
+    <section id="role-select" class="card">
+      <h2>Get started</h2>
+      <p>Select your role to register or sign in:</p>
+      <div class="roles">
+        <button data-role="commuter" class="role-btn">Commuter</button>
+        <button data-role="conductor" class="role-btn">Conductor</button>
+        <button data-role="municipal" class="role-btn">Municipal</button>
+      </div>
+    </section>
+
+    <!-- Registration / Login -->
+    <section id="register" class="card hidden">
+      <h2 id="register-title">Register</h2>
+
+      <form id="register-form">
+        <div id="commuter-fields" class="role-fields hidden">
+          <label>Phone number
+            <input type="tel" id="commuter-phone" required placeholder="e.g. 9876543210" />
+          </label>
+          <label>Name (optional)
+            <input type="text" id="commuter-name" placeholder="Your name" />
+          </label>
+        </div>
+
+        <div id="conductor-fields" class="role-fields hidden">
+          <label>Driver/Conductor name
+            <input type="text" id="conductor-name" required />
+          </label>
+          <label>Bus number (unique)
+            <input type="text" id="conductor-busno" required placeholder="e.g. GA-01-1234" />
+          </label>
+        </div>
+
+        <div id="municipal-fields" class="role-fields hidden">
+          <label>Employee ID
+            <input type="text" id="municipal-id" required placeholder="e.g. MC-001" />
+          </label>
+          <label>Name
+            <input type="text" id="municipal-name" />
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" id="register-submit">Register / Login</button>
+          <button type="button" id="register-cancel" class="secondary">Cancel</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Commuter dashboard -->
+    <section id="commuter-dashboard" class="card hidden">
+      <h2>Commuter Panel</h2>
+      <p id="commuter-welcome"></p>
+
+      <div class="panel">
+        <h3>Find buses</h3>
+        <div class="inline">
+          <label>Origin
+            <select id="origin-select"></select>
+          </label>
+          <label>Destination
+            <select id="destination-select"></select>
+          </label>
+          <button id="search-buses">Search</button>
+        </div>
+
+        <div id="buses-list" class="list"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Selected bus</h3>
+        <div id="selected-bus-info">No bus selected.</div>
+      </div>
+
+      <div class="panel">
+        <h3>Report an issue</h3>
+        <form id="report-form">
+          <label>Issue type
+            <select id="report-type">
+              <option>Delay</option>
+              <option>Overcrowding</option>
+              <option>Lack of service</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>Message
+            <textarea id="report-message" placeholder="Describe the issue..." required></textarea>
+          </label>
+          <button type="submit">Send report</button>
+        </form>
+      </div>
+
+      <div class="form-actions">
+        <button id="commuter-logout" class="secondary">Logout</button>
+      </div>
+    </section>
+
+    <!-- Conductor dashboard -->
+    <section id="conductor-dashboard" class="card hidden">
+      <h2>Conductor Panel</h2>
+      <p id="conductor-welcome"></p>
+
+      <div class="panel">
+        <h3>Register / Update Bus</h3>
+        <form id="bus-register-form">
+          <label>Bus number
+            <input id="bus-number" required />
+          </label>
+          <label>Route (comma-separated stops in order)
+            <input id="bus-route" placeholder="Stop A, Stop B, Stop C" required />
+          </label>
+          <label>Fare (enter base fare)
+            <input id="bus-fare" type="number" min="0" value="20" required />
+          </label>
+          <div class="form-actions">
+            <button type="submit">Save bus</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <h3>Update occupancy / arrival</h3>
+        <div class="inline">
+          <label>Select stop
+            <select id="conductor-stop-select"></select>
+          </label>
+          <label>Occupancy
+            <select id="occupancy-select">
+              <option value="green">Green (Empty)</option>
+              <option value="orange">Orange (Moderate)</option>
+              <option value="red">Red (Full)</option>
+            </select>
+          </label>
+          <label>Arrival status
+            <select id="arrival-status-select">
+              <option value="on-time">On time</option>
+              <option value="delayed">Delayed</option>
+            </select>
+          </label>
+          <label>ETA minutes (next stop)
+            <input id="eta-minutes" type="number" min="0" value="5" />
+          </label>
+          <button id="update-bus-status">Update</button>
+        </div>
+
+        <div id="conductor-bus-info"></div>
+      </div>
+
+      <div class="form-actions">
+        <button id="conductor-logout" class="secondary">Logout</button>
+      </div>
+    </section>
+
+    <!-- Municipal dashboard -->
+    <section id="municipal-dashboard" class="card hidden">
+      <h2>Municipal Panel</h2>
+      <p id="municipal-welcome"></p>
+
+      <div class="panel">
+        <h3>Overview</h3>
+        <div class="stats">
+          <div class="stat">
+            <div id="stat-total-buses">0</div>
+            <div class="stat-label">Total buses</div>
+          </div>
+          <div class="stat">
+            <div id="stat-on-time">0</div>
+            <div class="stat-label">On time</div>
+          </div>
+          <div class="stat">
+            <div id="stat-delayed">0</div>
+            <div class="stat-label">Delayed</div>
+          </div>
+          <div class="stat">
+            <div id="stat-complaints">0</div>
+            <div class="stat-label">Complaints</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Complaints</h3>
+        <div id="complaints-list" class="list"></div>
+      </div>
+
+      <div class="form-actions">
+        <button id="municipal-logout" class="secondary">Logout</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Prototype — frontend only. Data stored locally in your browser.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
